@@ -30,46 +30,50 @@ add_accuracy(df, 'KG-Powered 0s',   'KG-Powered 0.5s',  'KG-Powered 1s',   'Acc_
 agg = (
     df.groupby(['Question Category Type', 'Question Graph Type'])
       [['Acc_NoKG', 'Acc_KG']]
-      .mean()                     # mean accuracy for that bucket
+      .mean()
       .reset_index()
 )
 
 # Two pivot tables for the two heatmaps
-heat_no   = agg.pivot(index='Question Category Type',
-                      columns='Question Graph Type',
-                      values='Acc_NoKG')
-
-heat_yes  = agg.pivot(index='Question Category Type',
-                      columns='Question Graph Type',
-                      values='Acc_KG')
+heat_no  = agg.pivot(index='Question Category Type', columns='Question Graph Type', values='Acc_NoKG')
+heat_yes = agg.pivot(index='Question Category Type', columns='Question Graph Type', values='Acc_KG')
 
 # -------------------------------------------------
-# 4) Plot the two heatmaps side-by-side
+# 4) Plot with shared color scale (vmin/vmax)
 # -------------------------------------------------
-fig, axes = plt.subplots(1, 2, figsize=(14, 4.2), sharey=True)
+fig, axes = plt.subplots(1, 2, figsize=(14, 5.2), sharey=True)
+
+# Shared color range
+vmin = min(heat_no.min().min(), heat_yes.min().min())
+vmax = max(heat_no.max().max(), heat_yes.max().max())
 
 # Heatmap: WITHOUT KG
 sns.heatmap(
     heat_no, ax=axes[0],
     annot=True, fmt=".2f",
     cmap=sns.light_palette("blue", as_cmap=True),
-    cbar_kws={'label': 'Accuracy (%)'}
+    cbar_kws={'label': 'Accuracy (%)'},
+    vmin=vmin, vmax=vmax
 )
-axes[0].set_title("Accuracy by User & Graph Question Type (baseline - No KG)")
-axes[0].set_xlabel("Graph Question Type")
-axes[0].set_ylabel("User Question Type")
+axes[0].set_title("Accuracy by Query & Graph (No KG)")
+axes[0].set_xlabel("Graph Structure")
+axes[0].set_ylabel("Query Type")
 
 # Heatmap: WITH KG
 sns.heatmap(
     heat_yes, ax=axes[1],
     annot=True, fmt=".2f",
     cmap=sns.light_palette("blue", as_cmap=True),
-    cbar_kws={'label': 'Accuracy (%)'}
+    cbar_kws={'label': 'Accuracy (%)'},
+    vmin=vmin, vmax=vmax
 )
-axes[1].set_title("Accuracy by User & Graph Question Type (TAAF - With KG)")
-axes[1].set_xlabel("Graph Question Type")
-axes[1].set_ylabel("User Question Type")
+axes[1].set_title("Accuracy by Query & Graph (With KG)")
+axes[1].set_xlabel("Graph Structure")
+axes[1].set_ylabel("")
 
+# -------------------------------------------------
+# 5) Save and show
+# -------------------------------------------------
 plt.tight_layout()
-plt.savefig("../evaluation_outputs/RQ5-1.pdf", format="pdf")  # Save as vector PDF
+plt.savefig("../evaluation_outputs/RQ5-1.pdf", format="pdf")
 plt.show()

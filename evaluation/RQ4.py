@@ -33,7 +33,7 @@ color_palette = {
 }
 
 # -------------------- Plotting --------------------
-plt.figure(figsize=(13, 6))
+plt.figure(figsize=(13, 8))
 
 for model in df_rq3['Model'].unique():
     subset = df_rq3[df_rq3['Model'] == model]
@@ -43,13 +43,13 @@ for model in df_rq3['Model'].unique():
     plt.plot(subset['Time Interval'], subset['Acc_no_graph'], linestyle='--', marker='s', color=color,
              label=f"{model} (No KG)")
     for x, y in zip(subset['Time Interval'], subset['Acc_no_graph']):
-        plt.text(x, y - 2.5, f"{y:.2f}%", ha='center', fontsize=9, color=color)
+        plt.text(x, y - 2.5, f"{y:.2f}%", ha='center', fontsize=13, color=color)
 
     # With KG
     plt.plot(subset['Time Interval'], subset['Acc_graph'], linestyle='-', marker='o', color=color,
              label=f"{model} (With KG)")
     for x, y in zip(subset['Time Interval'], subset['Acc_graph']):
-        plt.text(x, y + 1.5, f"{y:.2f}%", ha='center', fontsize=9, color=color)
+        plt.text(x, y + 1.5, f"{y:.2f}%", ha='center', fontsize=13, color=color)
 
 # Adjust y-axis to better show downward trends
 plt.ylim(35, 105)  # focus on upper 2/3 where the data lies
