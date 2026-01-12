@@ -1,5 +1,8 @@
 ## Overview
 
+**Paper:** TAAF: A Trace Abstraction and Analysis Framework Synergizing Knowledge Graphs and Large Language Models  
+**DOI:** [10.1145/3744916.3787832](https://doi.org/10.1145/3744916.3787832)
+
 The **Trace Abstraction and Analysis Framework (TAAF)** turns massive, low-level kernel traces into concise, accurate answers by combining three pillars:
 
 * **State System** – Trace Compass’s time-indexed database that stores every CPU, thread, and value as efficiently searchable intervals.
@@ -282,8 +285,10 @@ You’re all set—compare **baseline** vs. **TAAF** answers, swap slices or mod
 
 Despite progress in using AI and LLMs for trace analysis, the community has lacked a public, ground-truth dataset for reasoning over kernel-level execution traces. Existing LLM benchmarks such as MMLU or Big-Bench do not address the unique challenges of trace analysis, including fine-grained time, multi-entity interactions, and numeric aggregation. To fill this gap, we introduce **TraceQA-100**, a curated benchmark designed to exercise all three dimensions.
 
+**TraceQA-100** consists of 100 questions over the `run0_0.csv` file (located in `trace_data/run0_0.csv`). Each question has a corresponding reference answer provided in the `refrence_answers/` directory.
+
 **Trace provenance and slicing:**
-TraceQA-100 uses LTTng traces of the SciMark 2.0 Java benchmark, which generates approximately 34 million kernel events. From each run, we extract 1s, 10s, and 100s slices around three canonical temporal locations (start, mid, and end), yielding a pool of trace segments that serve as the factual basis for question construction.
+TraceQA-100 uses LTTng traces of the SciMark 2.0 Java benchmark, which generates approximately 34 million kernel events. The `run0_0.csv` file contains a human-readable CSV dump of trace events from this benchmark run. From each run, we extract 1s, 10s, and 100s slices around three canonical temporal locations (start, mid, and end), yielding a pool of trace segments that serve as the factual basis for question construction.
 
 **Question authorship:**
 Questions were generated through a four-step, double-blind process. Two experts independently inspected trace slices and drafted questions requiring time-aware, multi-entity reasoning. Drafts were peer-reviewed and normalized into three answer formats: explanatory, multiple-choice, or true/false. A third expert, blind to the drafts, produced reference answers using hand-written Trace Compass scripts; disagreements were resolved through adjudication. Each question was then tagged as single-hub or multi-hub based on the reasoning scope.

@@ -72,7 +72,7 @@ for i in range(N):
 # Axis limits, ticks
 ax.set_ylim(rmin, 100)
 ax.set_yticks([60, 70, 80, 90, 100])
-ax.set_yticklabels(['60','70','80','90','100'])
+ax.set_yticklabels(['60','70','80','90','100'], fontsize=12)
 ax.set_rlabel_position(0)
 ax.set_xticks(angles)
 ax.set_xticklabels([])
@@ -91,7 +91,7 @@ for ang, name, fam, reasoning in zip(angles, models, families, is_reasoning):
     lbl = ax.text(ang, label_radius, txt, ha=ha, va='center',
                   color=family_colors[fam],
                   fontweight='bold' if reasoning else 'normal',
-                  fontsize=10, zorder=10)
+                  fontsize=13, zorder=10)
     lbl.set_path_effects([path_effects.withStroke(linewidth=2, foreground="white")])
 
 # Numeric annotations with a bit more radial margin
@@ -107,11 +107,11 @@ for i, (ang, val) in enumerate(zip(angles, accuracy)):
         roff = 3
 
     num = ax.text(ang + aoff, val + roff, f"{val:.2f}%",
-                  ha='center', va='bottom', fontsize=9.6, color='black', zorder=9)
+                  ha='center', va='bottom', fontsize=11.5, color='black', zorder=9)
     num.set_path_effects([path_effects.withStroke(linewidth=2, foreground="white")])
 
 # Title moved up a bit more
-ax.set_title("TAAF accuracy by model families (1 s, mid)", fontsize=14, fontweight='bold', y=1.15)
+ax.set_title("TAAF accuracy by model families (1 s, mid)", fontsize=17, fontweight='bold', y=1.15)
 
 # Legend
 family_handles = [
@@ -121,10 +121,12 @@ family_handles = [
 ]
 reasoning_handle = Line2D([0], [0], color='black', lw=3, label='Reasoning emphasis')
 ax.legend(handles=family_handles + [reasoning_handle],
-          loc='upper right', bbox_to_anchor=(1.14, 1.15), fontsize=9)
+          loc='upper right', bbox_to_anchor=(1.14, 1.15), fontsize=12)
 
 plt.tight_layout()
-plt.show()
-plt.savefig("../evaluation_outputs/RQ8.png", dpi=300)
+
+plt.savefig("../evaluation_outputs/RQ8.png")
 plt.savefig("../evaluation_outputs/RQ8.pdf")
+
+plt.show()
 
