@@ -49,7 +49,9 @@ TAAF-LLM-KG-State-System-/
 │   ├── cpu_usage_graph_generator.py # Creates KGs from the State System slices
 │   └── graph_info_extractor.py     # Prints basic KG + TXT statistics
 │
-├── taaf.ipynb                      # MAIN COLAB NOTEBOOK: baseline vs. full TAAF
+├── taaf.ipynb                      # MAIN COLAB NOTEBOOK: baseline vs. full TAAF (OpenAI)
+├── taaf_claude.ipynb               # Colab notebook for Claude (Anthropic)
+├── taaf_gemini.ipynb               # Colab notebook for Gemini (Google)
 │
 ├── taaf.py                         # Main script (if used outside Colab)
 │
@@ -205,12 +207,20 @@ After this step you now hold **both**
 
 These pairs enable the next phase, where we evaluate the **baseline** configuration (LLM + State System) against the full **TAAF** stack (LLM + State System + KG) by asking trace-related questions and comparing the answers.
 
-## Step 3  Run the `taaf.ipynb` notebook
+## Step 3  Run the notebooks
+
+TAAF provides three Colab notebooks for different LLM providers:
+
+* **`taaf.ipynb`** – Main notebook using OpenAI models (GPT-4o, etc.)
+* **`taaf_claude.ipynb`** – Notebook using Anthropic's Claude models
+* **`taaf_gemini.ipynb`** – Notebook using Google's Gemini models
+
+### Using `taaf.ipynb` (OpenAI)
 
 1. **Open the notebook**
 
    * In Colab: File → Upload notebook → select `taaf.ipynb`
-   * Or click “Open in Colab” from the GitHub file view.
+   * Or click "Open in Colab" from the GitHub file view.
 
 2. **Install dependencies**
    Run the first cell to install the OpenAI client:
@@ -220,7 +230,7 @@ These pairs enable the next phase, where we evaluate the **baseline** configurat
    ```
 
 3. **Provide your OpenAI key**
-   Colab shows a “Secrets” pane (🔒 icon) in the left sidebar.
+   Colab shows a "Secrets" pane (🔒 icon) in the left sidebar.
 
    * Add a secret named `YOUR_API_KEY` with your OpenAI API key.
    * The setup cell reads it via:
@@ -229,6 +239,18 @@ These pairs enable the next phase, where we evaluate the **baseline** configurat
      from google.colab import userdata
      client = OpenAI(api_key=userdata.get("YOUR_API_KEY"))
      ```
+
+### Using `taaf_claude.ipynb` (Anthropic Claude)
+
+1. **Open the notebook** – Upload `taaf_claude.ipynb` to Colab
+2. **Install dependencies** – Run the first cell: `!pip install -q anthropic`
+3. **Provide your Anthropic API key** – Add a secret named `ANTHROPIC_API_KEY` in Colab's Secrets pane
+
+### Using `taaf_gemini.ipynb` (Google Gemini)
+
+1. **Open the notebook** – Upload `taaf_gemini.ipynb` to Colab
+2. **Install dependencies** – Run the first cell: `!pip install -q google-generativeai`
+3. **Provide your Google API key** – Add a secret named `GOOGLE_API_KEY` in Colab's Secrets pane
 
 4. **Select your data slice and KG**
    At the top of the notebook adjust these paths:
@@ -254,9 +276,9 @@ These pairs enable the next phase, where we evaluate the **baseline** configurat
    * By default this prints two answers side-by-side:
      * **Baseline**: LLM reasoning over the State System raw data only.
      * **TAAF**: LLM reasoning over the Knowledge Graph built from the State System slice.
-   * You can also change the `model=` argument to any OpenAI-compatible endpoint (e.g. `"gpt-4o"`, `"o4-mini"`).
+   * You can also change the `model=` argument to any compatible endpoint (e.g. `"gpt-4o"`, `"claude-3-5-sonnet"`, `"gemini-2.5-pro"`).
 
-You’re all set—compare **baseline** vs. **TAAF** answers, swap slices or models, and explore your own trace questions!
+You're all set—compare **baseline** vs. **TAAF** answers, swap slices or models, and explore your own trace questions!
 
 ---
 ## Troubleshooting
@@ -296,4 +318,4 @@ Questions were generated through a four-step, double-blind process. Two experts 
 The resulting set includes an even 40/30/30 split across the three answer types and a 50/50 split across hub scopes. Since each prompt is instantiated on nine distinct trace slices (3 temporal locations × 3 time-window lengths), the benchmark comprises 100 × 9 = 900 unique question–trace-segment pairs.
 
 **Access:**
-TraceQA-100, our benchmark for evaluation, is available anonymously at: [https://docs.google.com/spreadsheets/d/1s6DatBkugvsSXXeXwTJJBZxHd9PoTfok0t3vWm0_OMw/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1s6DatBkugvsSXXeXwTJJBZxHd9PoTfok0t3vWm0_OMw/edit?usp=sharing)
+TraceQA-100, our benchmark for evaluation, is available at: [https://docs.google.com/spreadsheets/d/1s6DatBkugvsSXXeXwTJJBZxHd9PoTfok0t3vWm0_OMw/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1s6DatBkugvsSXXeXwTJJBZxHd9PoTfok0t3vWm0_OMw/edit?usp=sharing)
